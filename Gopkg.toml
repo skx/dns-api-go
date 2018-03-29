@@ -1,0 +1,19 @@
+[[constraint]]
+  branch = "master"
+  name = "github.com/domainr/dnsr"
+
+[[constraint]]
+  name = "github.com/go-redis/redis"
+  version = "6.10.2"
+
+[[constraint]]
+  name = "github.com/go-redis/redis_rate"
+  version = "6.5.0"
+
+[[constraint]]
+  name = "github.com/gorilla/mux"
+  version = "1.6.1"
+
+[prune]
+  go-tests = true
+  unused-packages = true
