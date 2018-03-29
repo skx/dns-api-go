@@ -30,6 +30,13 @@ The server has support for rate-limiting, you can enable this by passing the add
 
 If this flag is not present then rate-limiting will be disabled.
 
+### Heroku deployment
+
+Get into the cloned git repository ($GOPATH/src/github.com/skx/dns-api-go) and run:
+
+    $ heroku create
+    $ git push heroku master
+
 
 ## Notes
 
