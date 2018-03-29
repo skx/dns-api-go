@@ -30,6 +30,30 @@ The server has support for rate-limiting, you can enable this by passing the add
 
 If this flag is not present then rate-limiting will be disabled.
 
+
+### Docker deployment
+
+If you've cloned this repository you'll notice there is an existing [Dockerfile](Dockerfile) which can be used to build a container.  Create your image like so:
+
+    skx@frodo ~/go/src/github.com/skx/dns-api-go $ docker build -t dns-api:latest .
+    Sending build context to Docker daemon  301.1kB
+    Step 1/10 : FROM alpine
+    latest: Pulling from library/alpine
+    ..
+    ..
+    Step 10/10 : ENTRYPOINT ["/root/dns-api-go", "-host","0.0.0.0" , "-port 3001" ]
+    ..
+    Successfully built
+
+Once you have your container you can launch it like so:
+
+     $ docker run -d -p 9999:9999/tcp dns-api:latest
+
+And test it via:
+
+     $ curl http://localhost:9999/txt/steve.fi
+
+
 ### Heroku deployment
 
 Get into the cloned git repository ($GOPATH/src/github.com/skx/dns-api-go) and run:
