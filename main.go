@@ -187,24 +187,26 @@ func DNSHandler(res http.ResponseWriter, req *http.Request) {
 	//
 	// Test things.
 	//
-	rate, delay, allowed := rateLimiter.AllowHour(ip, limit)
+	if rateLimiter != nil {
+		rate, delay, allowed := rateLimiter.AllowHour(ip, limit)
 
-	//
-	// Send back the rate-limit headers
-	//
-	h := res.Header()
-	h.Set("X-RateLimit-Limit", strconv.FormatInt(limit, 10))
-	h.Set("X-RateLimit-IP", ip)
-	h.Set("X-RateLimit-Remaining", strconv.FormatInt(limit-rate, 10))
-	delaySec := int64(delay / time.Second)
-	h.Set("X-RateLimit-Delay", strconv.FormatInt(delaySec, 10))
+		//
+		// Send back the rate-limit headers
+		//
+		h := res.Header()
+		h.Set("X-RateLimit-Limit", strconv.FormatInt(limit, 10))
+		h.Set("X-RateLimit-IP", ip)
+		h.Set("X-RateLimit-Remaining", strconv.FormatInt(limit-rate, 10))
+		delaySec := int64(delay / time.Second)
+		h.Set("X-RateLimit-Delay", strconv.FormatInt(delaySec, 10))
 
-	//
-	// If the limit has been exceeded tell the client.
-	//
-	if !allowed {
-		http.Error(res, "API rate limit exceeded.", 429)
-		return
+		//
+		// If the limit has been exceeded tell the client.
+		//
+		if !allowed {
+			http.Error(res, "API rate limit exceeded.", 429)
+			return
+		}
 	}
 
 	//
