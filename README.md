@@ -13,7 +13,9 @@ Missing features:
 
 ## Installation
 
-   go get github.com/skx/dns-api-go
+You can install the project like so:
+
+    $ go get github.com/skx/dns-api-go
 
 
 ## Notes
