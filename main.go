@@ -122,6 +122,7 @@ func IndexHandler(res http.ResponseWriter, req *http.Request) {
 	type Pagedata struct {
 		Hostname string
 		Version  string
+		Redis    bool
 	}
 
 	//
@@ -130,6 +131,7 @@ func IndexHandler(res http.ResponseWriter, req *http.Request) {
 	var x Pagedata
 	x.Hostname = req.Host
 	x.Version = version
+	x.Redis = (rateLimiter != nil)
 
 	//
 	// Load our template from the embedded resource.
@@ -354,6 +356,7 @@ func main() {
 	// The command-line flags we support
 	//
 	host := flag.String("host", "127.0.0.1", "The IP to bind upon.")
+	red := flag.String("redis-server", "", "The address of a redis-server to store rate-limiting data.")
 	port := flag.Int("port", 9999, "The port to bind upon.")
 	vers := flag.Bool("version", false, "Show our version and exit.")
 
@@ -371,18 +374,30 @@ func main() {
 	}
 
 	//
-	// Setup a redis-connection for rate-limiting.
+	// If we have a redis-server defined then use it.
 	//
-	ring := redis.NewRing(&redis.RingOptions{
-		Addrs: map[string]string{
-			"server1": "localhost:6379",
-		},
-	})
+	if *red != "" {
 
-	//
-	// Create the limiter.
-	//
-	rateLimiter = redis_rate.NewLimiter(ring)
+		//
+		// Setup a redis-connection for rate-limiting.
+		//
+		ring := redis.NewRing(&redis.RingOptions{
+			Addrs: map[string]string{
+				"server1": *red,
+			},
+		})
+
+		//
+		// And point the rate-limiter to it
+		//
+		rateLimiter = redis_rate.NewLimiter(ring)
+	} else {
+
+		//
+		// No rate-limiting in use
+		//
+		rateLimiter = nil
+	}
 
 	//
 	// And finally start our server

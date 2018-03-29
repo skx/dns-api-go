@@ -22,6 +22,14 @@ You can install the project like so:
 
     $ go get github.com/skx/dns-api-go
 
+### Rate Limiting
+
+The server has support for rate-limiting, you can enable this by passing the address of a [redis](https://redis.io/) server to the binary:
+
+    $ ./dns-api-go  -redis-server localhost:6379
+
+If this flag is not present then rate-limiting will be disabled.
+
 
 ## Notes
 

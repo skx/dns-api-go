@@ -87,7 +87,8 @@
             </code></p>
           </div>
 
-          <h2>Rate-Limiting &amp; Abuse-Protection</h2>
+          {{if .Redis}}
+          <h3>Rate-Limiting &amp; Abuse-Protection</h3>
           <div class="row">
             <div class="col-sm-1 col-md-1">
             </div>
@@ -97,6 +98,8 @@
               <p>This installation is running <code>dns-api-go {{.Version}}</code>.</p>
             </div>
           </div>
+        {{end}}
+
         </div>
       </div>
     </div>
