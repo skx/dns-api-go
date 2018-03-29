@@ -25,6 +25,7 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 	"text/template"
@@ -34,6 +35,13 @@ import (
 	"github.com/go-redis/redis"
 	"github.com/go-redis/redis_rate"
 	"github.com/gorilla/mux"
+)
+
+//
+// Our version string.
+//
+var (
+	version = "unreleased"
 )
 
 //
@@ -330,11 +338,17 @@ func main() {
 	//
 	host := flag.String("host", "127.0.0.1", "The IP to bind upon")
 	port := flag.Int("port", 9999, "The port number to listen upon")
+	vers := flag.Bool("version", false, "Show our version and exit")
 
 	//
 	// Parse the flags
 	//
 	flag.Parse()
+
+	if *vers {
+		fmt.Printf("dns-api-go %s\n", version)
+		os.Exit(0)
+	}
 
 	//
 	// Setup a redis-connection for rate-limiting.
