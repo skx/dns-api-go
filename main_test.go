@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	"github.com/gorilla/mux"
@@ -120,5 +121,86 @@ func TestInvalidDNSTypes(t *testing.T) {
 		if content != "Invalid lookup-type - use A|AAAA|ANY|CNAME|MX|NS|PTR|SOA|TXT\n" {
 			t.Fatalf("Unexpected body: '%s'", body)
 		}
+	}
+}
+
+//
+// Test a single lookup of steve.fi's TXT-record.
+//
+func TestSteve(t *testing.T) {
+	// Wire up the route
+	r := mux.NewRouter()
+	r.HandleFunc("/{type}/{value}", DNSHandler).Methods("GET")
+	r.HandleFunc("/{type}/{value}/", DNSHandler).Methods("GET")
+
+	// Get the test-server
+	ts := httptest.NewServer(r)
+	defer ts.Close()
+
+	url := ts.URL + "/txt/steve.fi"
+
+	resp, err := http.Get(url)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	//
+	// Get the body
+	//
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+
+	if err != nil {
+		t.Errorf("Failed to read response-body %v\n", err)
+	}
+
+	content := fmt.Sprintf("%s", body)
+	if status := resp.StatusCode; status != http.StatusOK {
+		t.Errorf("Unexpected status-code: %v", status)
+	}
+
+	if !strings.Contains(content, "v=spf1") {
+		t.Fatalf("Unexpected body: '%s'", content)
+	}
+}
+
+//
+// Test a single lookup of a bogus-domain.
+//
+func TestBogusDNS(t *testing.T) {
+
+	// Wire up the route
+	r := mux.NewRouter()
+	r.HandleFunc("/{type}/{value}", DNSHandler).Methods("GET")
+	r.HandleFunc("/{type}/{value}/", DNSHandler).Methods("GET")
+
+	// Get the test-server
+	ts := httptest.NewServer(r)
+	defer ts.Close()
+
+	url := ts.URL + "/a/invalid@example.com"
+
+	resp, err := http.Get(url)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	//
+	// Get the body
+	//
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+
+	if err != nil {
+		t.Errorf("Failed to read response-body %v\n", err)
+	}
+
+	content := fmt.Sprintf("%s", body)
+	if status := resp.StatusCode; status != http.StatusOK {
+		t.Errorf("Unexpected status-code: %v", status)
+	}
+
+	if !strings.Contains(content, "NXDOMAIN") {
+		t.Fatalf("Unexpected body: '%s'", content)
 	}
 }
