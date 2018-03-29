@@ -131,6 +131,9 @@ func IndexHandler(res http.ResponseWriter, req *http.Request) {
 	x.Hostname = req.Host
 	x.Version = version
 
+	//
+	// Load our template from the embedded resource.
+	//
 	tmpl, err := Asset("data/index.html")
 	if err != nil {
 		fmt.Fprintf(res, err.Error())
@@ -138,13 +141,13 @@ func IndexHandler(res http.ResponseWriter, req *http.Request) {
 	}
 
 	//
-	//  Load our template, from the resource.
+	// Parse our template.
 	//
 	src := string(tmpl)
 	t := template.Must(template.New("tmpl").Parse(src))
 
 	//
-	// Execute the template into our buffer.
+	// Execute the template into a temporary buffer.
 	//
 	buf := &bytes.Buffer{}
 	err = t.Execute(buf, x)
@@ -157,7 +160,7 @@ func IndexHandler(res http.ResponseWriter, req *http.Request) {
 	}
 
 	//
-	// Otherwise write the result.
+	// Otherwise send the result to the caller.
 	//
 	buf.WriteTo(res)
 }
@@ -194,13 +197,20 @@ func DNSHandler(res http.ResponseWriter, req *http.Request) {
 	limit := int64(200)
 
 	//
-	// Test things.
+	// If we've got a rate-limiter then we can use it.
+	//
+	// This is wrapped because it won't be configured when we
+	// run our test-cases (minimal as they might be).
 	//
 	if rateLimiter != nil {
+
+		//
+		// Lookup the current stats.
+		//
 		rate, delay, allowed := rateLimiter.AllowHour(ip, limit)
 
 		//
-		// Send back the rate-limit headers
+		// We'll return the rate-limit headers to the caller.
 		//
 		h := res.Header()
 		h.Set("X-RateLimit-Limit", strconv.FormatInt(limit, 10))
@@ -343,19 +353,18 @@ func main() {
 	//
 	// The command-line flags we support
 	//
-
-	//
-	// Host/Port for binding upon
-	//
-	host := flag.String("host", "127.0.0.1", "The IP to bind upon")
-	port := flag.Int("port", 9999, "The port number to listen upon")
-	vers := flag.Bool("version", false, "Show our version and exit")
+	host := flag.String("host", "127.0.0.1", "The IP to bind upon.")
+	port := flag.Int("port", 9999, "The port to bind upon.")
+	vers := flag.Bool("version", false, "Show our version and exit.")
 
 	//
 	// Parse the flags
 	//
 	flag.Parse()
 
+	//
+	// Showing the version?
+	//
 	if *vers {
 		fmt.Printf("dns-api-go %s\n", version)
 		os.Exit(0)
