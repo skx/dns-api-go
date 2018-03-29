@@ -3,3 +3,4 @@ dns-api-go-*
 fmt
 foo.html
 vendor/
+cover.out
