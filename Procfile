@@ -1,1 +1,1 @@
-web: dns-api-go -port $PORT
+web: dns-api-go -host 0.0.0.0 -port $PORT
