@@ -192,6 +192,9 @@ func DNSHandler(res http.ResponseWriter, req *http.Request) {
 		}
 	}()
 
+	h := res.Header()
+	h.Set("Access-Control-Allow-Origin", "*")
+
 	//
 	// Lookup the remote IP and limit to 200/Hour
 	//
@@ -214,7 +217,6 @@ func DNSHandler(res http.ResponseWriter, req *http.Request) {
 		//
 		// We'll return the rate-limit headers to the caller.
 		//
-		h := res.Header()
 		h.Set("X-RateLimit-Limit", strconv.FormatInt(limit, 10))
 		h.Set("X-RateLimit-IP", ip)
 		h.Set("X-RateLimit-Remaining", strconv.FormatInt(limit-rate, 10))
