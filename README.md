@@ -1,6 +1,6 @@
-# dns-api.go
+# dns-api-go
 
-This is a golang port of the old perl-based DNS-API.org site.
+This is a golang port of the old [perl-based DNS-API.org site](https://github.com/skx/dns-api.org/).
 
 * Still allows the same lookups.
 * Still has rate-limiting.
@@ -13,7 +13,7 @@ Missing features:
 
 ## Installation
 
-   go get github.com/skx/dns-api.go
+   go get github.com/skx/dns-api-go
 
 
 ## Notes

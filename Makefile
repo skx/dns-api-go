@@ -6,7 +6,7 @@
 #
 # Build our binary by default
 #
-all: dns-api.go
+all: dns-api-go
 
 
 #
@@ -29,7 +29,7 @@ deps:
 #
 # Build our main binary
 #
-dns-api.go: bindata.go $(wildcard *.go)
+dns-api-go: bindata.go $(wildcard *.go)
 	go build .
 
 
@@ -49,7 +49,7 @@ test:
 # Clean our build
 #
 clean:
-	rm dns-api.go || true
+	rm dns-api-go || true
 
 html:
 	go test -coverprofile=cover.out
