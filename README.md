@@ -53,6 +53,8 @@ And test it via:
 
      $ curl http://localhost:9999/txt/steve.fi
 
+Deploying with a redis image too, to allow rate-limiting, is [left as an exercise](https://blog.blindside.io/docker-compose-go-c2bb7bed0bab).
+
 
 ### Heroku deployment
 
