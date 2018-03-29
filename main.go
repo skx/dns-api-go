@@ -115,12 +115,21 @@ func IconHandler(res http.ResponseWriter, req *http.Request) {
 // based upon the incoming request.
 //
 func IndexHandler(res http.ResponseWriter, req *http.Request) {
+
+	//
+	// This is the data that we add to our output-template.
+	//
 	type Pagedata struct {
 		Hostname string
+		Version  string
 	}
 
+	//
+	// Create an instance and populate the hostname + version
+	//
 	var x Pagedata
-	x.Hostname, _, _ = net.SplitHostPort(req.Host)
+	x.Hostname = req.Host
+	x.Version = version
 
 	tmpl, err := Asset("data/index.html")
 	if err != nil {
