@@ -17,3 +17,8 @@
 [prune]
   go-tests = true
   unused-packages = true
+
+[metadata.heroku]
+  root-package = "github.com/skx/dns-api-go"
+  go-version = "go1.10"
+  install = ["."]
