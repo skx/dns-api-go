@@ -49,7 +49,7 @@ test:
 # Clean our build
 #
 clean:
-	rm dns-api-go || true
+	rm dns-api-go dns-api-go-* || true
 
 html:
 	go test -coverprofile=cover.out
