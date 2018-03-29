@@ -355,7 +355,7 @@ func main() {
 	//
 	// The command-line flags we support
 	//
-	host := flag.String("host", "127.0.0.1", "The IP to bind upon.")
+	host := flag.String("host", "[::]", "The IP to bind upon.")
 	red := flag.String("redis-server", "", "The address of a redis-server to store rate-limiting data.")
 	port := flag.Int("port", 9999, "The port to bind upon.")
 	vers := flag.Bool("version", false, "Show our version and exit.")
