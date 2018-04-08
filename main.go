@@ -78,7 +78,7 @@ func RemoteIP(request *http.Request) string {
 // Serve a static thing from an embedded resource.
 //
 func serveResource(response http.ResponseWriter, request *http.Request, resource string, mime string) {
-	tmpl, err := Asset(resource)
+	tmpl, err := getResource(resource)
 	if err != nil {
 		fmt.Fprintf(response, err.Error())
 		return

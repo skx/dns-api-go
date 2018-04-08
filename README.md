@@ -72,15 +72,15 @@ so we can deploy it automatically even on other sites.
 
 ## Hacking
 
-If you update the files beneath `data/` you need to rebuild the `bindata.go` file before they will become visible.
+If you update the files beneath `data/` you need to rebuild the `static.go` file before they will become visible.
 
-First of all install the `go-bindata` tool if you don't already have it:
+First of all install the `implant` tool if you don't already have it:
 
-     $ go get -u github.com/jteeuwen/go-bindata/...
+     $ go get -u github.com/skx/implant
 
 Now you can rebuild like so:
 
-     $ go-bindata -nomemcopy data/
+     $ implant -input data/ -output static.go
      $ go build .
 
 Steve

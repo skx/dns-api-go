@@ -10,11 +10,10 @@ all: dns-api-go
 
 
 #
-# Rebuild our bindata.go file from the assets beneath data/
+# Rebuild our static.go file from the assets beneath data/
 #
-bindata.go: data/
-	go-bindata -nomemcopy data/
-	go fmt bindata.go
+static.go: data/
+	implant -input data/ -output static.go
 
 
 #
@@ -29,7 +28,7 @@ deps:
 #
 # Build our main binary
 #
-dns-api-go: bindata.go $(wildcard *.go)
+dns-api-go: static.go $(wildcard *.go)
 	go build .
 
 
@@ -51,6 +50,9 @@ test:
 clean:
 	rm dns-api-go dns-api-go-* cover.out fmt || true
 
+#
+# Make a HTML coverage report
+#
 html:
 	go test -coverprofile=cover.out
 	go tool cover -html=cover.out -o foo.html
