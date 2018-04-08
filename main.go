@@ -136,7 +136,7 @@ func IndexHandler(res http.ResponseWriter, req *http.Request) {
 	//
 	// Load our template from the embedded resource.
 	//
-	tmpl, err := Asset("data/index.html")
+	tmpl, err := getResource("data/index.html")
 	if err != nil {
 		fmt.Fprintf(res, err.Error())
 		return
