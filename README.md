@@ -2,6 +2,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/skx/dns-api-go)](https://goreportcard.com/report/github.com/skx/dns-api-go)
 [![license](https://img.shields.io/github/license/skx/dns-api-go.svg)](https://github.com/skx/dns-api-go/blob/master/LICENSE)
 [![Release](https://img.shields.io/github/release/skx/dns-api-go.svg)](https://github.com/skx/dns-api-go/releases/latest)
+[![gocover store](http://gocover.io/_badge/github.com/skx/dns-api-go)](http://gocover.io/github.com/skx/dns-api-go)
 
 # dns-api-go
 
