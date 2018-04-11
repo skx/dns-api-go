@@ -11,17 +11,15 @@ This is a golang port of the old [perl-based DNS-API.org site](https://github.co
 * Still allows the same lookups.
 * Still has rate-limiting.
 
-Missing features:
-
-* TTL on records
-   * Because I couldn't find a decent DNS library.
-
 
 ## Installation
 
 You can install the project like so:
 
-    $ go get github.com/skx/dns-api-go
+    $ go get -u github.com/skx/dns-api-go
+
+(The `-u` flag will update your installation if it was already present.)
+
 
 ### Rate Limiting
 

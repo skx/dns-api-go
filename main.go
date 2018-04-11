@@ -7,9 +7,6 @@
 //
 //  * Lookup of most common DNS-types
 //
-// Anti-Features
-//
-//  * No TTL
 //
 // Steve
 // --
@@ -31,7 +28,6 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/domainr/dnsr"
 	"github.com/go-redis/redis"
 	"github.com/go-redis/redis_rate"
 	"github.com/gorilla/mux"
@@ -263,7 +259,6 @@ func DNSHandler(res http.ResponseWriter, req *http.Request) {
 	//
 	if t != "A" &&
 		t != "AAAA" &&
-		t != "ANY" &&
 		t != "CNAME" &&
 		t != "MX" &&
 		t != "NS" &&
@@ -271,28 +266,14 @@ func DNSHandler(res http.ResponseWriter, req *http.Request) {
 		t != "SOA" &&
 		t != "TXT" {
 		status = http.StatusNotFound
-		err = errors.New("Invalid lookup-type - use A|AAAA|ANY|CNAME|MX|NS|PTR|SOA|TXT")
+		err = errors.New("Invalid lookup-type - use A|AAAA|CNAME|MX|NS|PTR|SOA|TXT")
 		return
 	}
 
 	//
 	// The result of what we'll return
 	//
-	var results []map[string]string
-
-	r := dnsr.New(10000)
-	for _, rr := range r.Resolve(v, t) {
-
-		if t == "ANY" || rr.Type == t {
-			tmp := make(map[string]string)
-
-			tmp["type"] = rr.Type
-			tmp["name"] = rr.Name
-			tmp["value"] = rr.Value
-
-			results = append(results, tmp)
-		}
-	}
+	results, _ := lookup(v, t)
 
 	//
 	// Now output the results as JSON (prettily), if we got some

@@ -118,7 +118,7 @@ func TestInvalidDNSTypes(t *testing.T) {
 		if status := resp.StatusCode; status != http.StatusNotFound {
 			t.Errorf("Unexpected status-code: %v", status)
 		}
-		if content != "Invalid lookup-type - use A|AAAA|ANY|CNAME|MX|NS|PTR|SOA|TXT\n" {
+		if content != "Invalid lookup-type - use A|AAAA|CNAME|MX|NS|PTR|SOA|TXT\n" {
 			t.Fatalf("Unexpected body: '%s'", body)
 		}
 	}
