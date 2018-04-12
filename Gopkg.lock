@@ -2,12 +2,6 @@
 
 
 [[projects]]
-  branch = "master"
-  name = "github.com/domainr/dnsr"
-  packages = ["."]
-  revision = "cd61e92035349e7838e7eca38620a8c3548e73fe"
-
-[[projects]]
   name = "github.com/go-redis/redis"
   packages = [
     ".",
@@ -43,8 +37,8 @@
 [[projects]]
   name = "github.com/miekg/dns"
   packages = ["."]
-  revision = "5364553f1ee9cddc7ac8b62dce148309c386695b"
-  version = "v1.0.4"
+  revision = "83c435cc65d2862736428b9b4d07d0ab10ad3e4d"
+  version = "v1.0.5"
 
 [[projects]]
   branch = "master"
@@ -53,7 +47,7 @@
     "ed25519",
     "ed25519/internal/edwards25519"
   ]
-  revision = "88942b9c40a4c9d203b82b3731787b672d6e809b"
+  revision = "d6449816ce06963d9d136eee5a56fca5b0616e7e"
 
 [[projects]]
   branch = "master"
@@ -66,7 +60,7 @@
     "ipv4",
     "ipv6"
   ]
-  revision = "6078986fec03a1dcc236c34816c71b0e05018fda"
+  revision = "61147c48b25b599e5b561d2e9c4f3e1ef489ca41"
 
 [[projects]]
   branch = "master"
@@ -77,6 +71,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "5676038616a0f36aaa429b98630bc922b1456b848d603de7028e56a0494cf65d"
+  inputs-digest = "76f71088ab8c8ded2b2fd2798b35132d1b3da03eb0b3bbe48c85b998bdb570c6"
   solver-name = "gps-cdcl"
   solver-version = 1
