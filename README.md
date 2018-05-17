@@ -28,9 +28,9 @@ The server has support for rate-limiting, you can enable this by passing the add
     $ ./dns-api-go  -redis-server localhost:6379
 
 If this flag is not present then rate-limiting will be disabled.  If a client
-makes too many requests they will be returned a HTTP 425 status-cude, and each
-request made will return a series of headers prefixed with `X-RateLimit` to
-allow clients to see how many requests they have made, and have remaining.
+makes too many requests they will be returned a [HTTP 429 status-code](https://httpstatuses.com/429).  Each request made will return a series of headers
+prefixed with `X-RateLimit` to allow clients to see how many requests they
+have made, and have remaining.
 
 
 ### Docker deployment
