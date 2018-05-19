@@ -3,7 +3,6 @@
 // maps with suitable results.
 //
 
-
 package main
 
 import (

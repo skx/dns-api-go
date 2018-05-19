@@ -12,7 +12,7 @@ all: dns-api-go
 #
 # Rebuild our static.go file from the assets beneath data/
 #
-static.go: data/
+static.go: data/ data/css data/js
 	implant -input data/ -output static.go
 
 
