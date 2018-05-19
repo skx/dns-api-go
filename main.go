@@ -70,48 +70,6 @@ func RemoteIP(request *http.Request) string {
 	return (address)
 }
 
-// ExpandResource reads a file from our static-resources, and
-// processes any lines that contain "includes".
-//
-// This is done to ensure that the HTML that we server to clients
-// doesn't require any CSS or JS requests
-//
-func ExpandResource(file string) (string, error) {
-
-	data, err := getResource(file)
-	if err != nil {
-		return "", err
-	}
-
-	output := ""
-
-	// look for the "#include <xx>" lines
-	lines := strings.Split(string(data), "\n")
-
-	for _, line := range lines {
-
-		if strings.HasPrefix(line, "#include ") {
-			//
-			// Open the file
-			//
-			inc := line
-			inc = strings.TrimPrefix(inc, "#include ")
-
-			txt, err := getResource(inc)
-			if err != nil {
-				return "", nil
-			}
-
-			output += string(txt)
-		} else {
-			output += line
-			output += "\n"
-		}
-	}
-
-	return output, nil
-}
-
 //
 // Serve a static thing from an embedded resource.
 //
