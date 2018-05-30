@@ -14,18 +14,22 @@ This is a golang port of the old [perl-based DNS-API.org site](https://github.co
 
 ## Installation
 
-You can install the project like so:
+Assuming you have a working go-setup you can update & install the project
+via these two commands:
 
-    $ go get -u github.com/skx/dns-api-go
+    $ go get -u  github.com/skx/dns-api-go
+    $ go install github.com/skx/dns-api-go
 
-(The `-u` flag will update your installation if it was already present.)
+If you don't have a golang environment configured you should be able to
+download [a binary release](https://github.com/skx/dns-api-go/releases) from
+the github project.
 
 
 ### Rate Limiting
 
 The server has support for rate-limiting, you can enable this by passing the address of a [redis](https://redis.io/) server to the binary:
 
-    $ ./dns-api-go  -redis-server localhost:6379
+    $ dns-api-go  -redis-server localhost:6379
 
 If this flag is not present then rate-limiting will be disabled.  If a client
 makes too many requests they will be returned a [HTTP 429 status-code](https://httpstatuses.com/429).  Each request made will return a series of headers
@@ -79,6 +83,7 @@ If you update the files beneath `data/` you need to rebuild the `static.go` file
 First of all install the `implant` tool if you don't already have it:
 
      $ go get -u github.com/skx/implant
+     $ go install github.com/skx/implant
 
 Now you can rebuild like so:
 
