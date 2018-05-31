@@ -31,6 +31,7 @@ import (
 	"github.com/go-redis/redis"
 	"github.com/go-redis/redis_rate"
 	"github.com/gorilla/mux"
+	_ "github.com/skx/golang-metrics"
 )
 
 //
