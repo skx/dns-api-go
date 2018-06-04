@@ -18,7 +18,7 @@ var CACHE = make(map[string]string)
 // ExpandResource reads a file from our static-resources, and
 // processes any lines that contain "includes".
 //
-// This is done to ensure that the HTML that we server to clients
+// This is done to ensure that the HTML that we serve to clients
 // doesn't require any CSS or JS requests
 //
 func ExpandResource(file string) (string, error) {
