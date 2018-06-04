@@ -72,22 +72,28 @@ Get into the cloned git repository ($GOPATH/src/github.com/skx/dns-api-go) and r
 
 ## Notes
 
-The main page dynamically includes the domain-name under which it was reached,
+* The main page dynamically includes the domain-name under which it was reached,
 so we can deploy it automatically even on other sites.
+* PTR (reverse-DNS) requests must be submitted in reverse-format, for example:
+  * https://dns-api.org/ptr/100.183.9.176.in-addr.arpa.
+  * https://dns-api.org/ptr/0.0.1.0.0.0.0.0.0.0.0.0.0.0.0.0.3.8.0.6.1.5.1.0.8.f.4.0.1.0.a.2.ip6.arpa.
 
 
 ## Hacking
 
-If you update the files beneath `data/` you need to rebuild the `static.go` file before they will become visible.
+If you alter the template-files beneath `data/` you will need to rebuild the `static.go` file before those changes will become visible.  (i.e. They are pre-processed and included inline in our generated binary, rather than being read at run-time.)
 
 First of all install the `implant` tool if you don't already have it:
 
      $ go get -u github.com/skx/implant
      $ go install github.com/skx/implant
 
-Now you can rebuild like so:
+Now you can regenerate the static.go file:
 
      $ implant -input data/ -output static.go
+
+And rebuild the main binary:
+
      $ go build .
 
 Steve
