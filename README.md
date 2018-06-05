@@ -37,6 +37,17 @@ prefixed with `X-RateLimit` to allow clients to see how many requests they
 have made, and have remaining.
 
 
+### Metrics
+
+If you have a graphite-host you can point the environmental-variable `METRICS`
+at it.  This will then receive metrics:
+
+* Counts of DNS-queries & errors.
+* System-metrics.
+   * via [golang-metrics](https://github.com/skx/golang-metrics)
+
+
+
 ### Docker deployment
 
 If you've cloned this repository you'll notice there is an existing [Dockerfile](Dockerfile) which can be used to build a container.  Create your image like so:
