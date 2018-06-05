@@ -460,7 +460,7 @@ func main() {
 		// Fire up a cron-timer to submit metrics now and again
 		//
 		c := cron.New()
-		c.AddFunc("@every 1s", func() {
+		c.AddFunc("@every 30s", func() {
 			submitMetrics()
 		})
 		c.Start()
