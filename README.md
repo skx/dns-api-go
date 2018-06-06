@@ -42,7 +42,8 @@ have made, and have remaining.
 If you have a graphite-host you can point the environmental-variable `METRICS`
 at it.  This will then receive metrics:
 
-* Counts of DNS-queries & errors.
+* Counts of DNS-queries by type.
+* Count of success/failure responses.
 * System-metrics.
    * via [golang-metrics](https://github.com/skx/golang-metrics)
 
