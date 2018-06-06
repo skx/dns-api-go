@@ -62,6 +62,51 @@ var mutex = &sync.Mutex{}
 // Handle to our metrics-host
 var metrics *graphite.Graphite
 
+// MetricsFromEnvironment sets up a carbon connection from the environment
+// if suitable values are found.
+func MetricsFromEnvironment() {
+
+	//
+	// Get the hostname to connect to.
+	//
+	host := os.Getenv("METRICS_HOST")
+	if host == "" {
+		host = os.Getenv("METRICS")
+	}
+
+	// No host then we'll return
+	if host == "" {
+		return
+	}
+
+	// Split the into Host + Port
+	ho, pr, err := net.SplitHostPort(host)
+	if err != nil {
+		// If that failed we assume the port was missing
+		ho = host
+		pr = "2003"
+	}
+
+	// Setup the protocol to use
+	protocol := os.Getenv("METRICS_PROTOCOL")
+	if protocol == "" {
+		protocol = "udp"
+	}
+
+	// Ensure that the port is an integer
+	port, err := strconv.Atoi(pr)
+	if err == nil {
+		metrics, err = graphite.GraphiteFactory(protocol, ho, port, "")
+
+		if err != nil {
+			fmt.Printf("Error setting up metrics - skipping - %s\n", err.Error())
+		}
+	} else {
+		fmt.Printf("Error setting up metrics - failed to convert port to number - %s\n", err.Error())
+
+	}
+}
+
 //
 // This function is called every 30 seconds if we were launched
 // with a METRICS environmental-variable.
@@ -70,6 +115,10 @@ func submitMetrics() {
 	if metrics != nil {
 		mutex.Lock()
 		for key, val := range stats {
+			v := os.Getenv("METRICS_VERBOSE")
+			if v != "" {
+				fmt.Printf("%s %d\n", key, val)
+			}
 			metrics.SimpleSend(key, fmt.Sprintf("%d", val))
 		}
 		mutex.Unlock()
@@ -432,42 +481,20 @@ func main() {
 	//
 	// If we have a metrics-host then we'll submit metrics there
 	//
-	mhost := os.Getenv("METRICS")
-	if mhost != "" {
+	MetricsFromEnvironment()
 
-		// Split the into Host + Port
-		ho, pr, err := net.SplitHostPort(mhost)
-		if err != nil {
-			// If that failed we assume the port was missing
-			ho = mhost
-			pr = "2003"
-		}
-
-		// Ensure that the port is an integer
-		port, err := strconv.Atoi(pr)
-		if err == nil {
-			metrics, err = graphite.GraphiteFactory("udp", ho, port, "")
-
-			if err != nil {
-				fmt.Printf("Error setting up metrics - skipping - %s\n", err.Error())
-			}
-		} else {
-			fmt.Printf("Error setting up metrics - failed to convert port to number - %s\n", err.Error())
-
-		}
-
-		//
-		// Fire up a cron-timer to submit metrics now and again
-		//
+	//
+	// If we did setup metrics-stuff then we'll want to submit metrics
+	// regularly.  Fire up a job to do that every half-minute.
+	//
+	if metrics != nil {
 		c := cron.New()
-		c.AddFunc("@every 30s", func() {
-			submitMetrics()
-		})
+		c.AddFunc("@every 30s", func() { submitMetrics() })
 		c.Start()
 	}
 
 	//
-	// And finally start our server
+	// And finally start our HTTP-server
 	//
 	serve(*host, *port)
 }
