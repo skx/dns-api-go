@@ -11,7 +11,7 @@ import (
 )
 
 //
-// Cache for expanded templates
+// CACHE is a cache for our expanded templates.
 //
 var CACHE = make(map[string]string)
 
