@@ -474,11 +474,6 @@ func main() {
 	}
 
 	//
-	// Populate our stats-map
-	//
-	stats = make(map[string]int64)
-
-	//
 	// If we have a metrics-host then we'll submit metrics there
 	//
 	MetricsFromEnvironment()
@@ -497,4 +492,17 @@ func main() {
 	// And finally start our HTTP-server
 	//
 	serve(*host, *port)
+}
+
+// init sets up our stats-map.
+//
+// Ordinarily I'd do this in `main()` however that would mean that the
+// map wouldn't be created in time for our test-cases - as main() wouldn't
+// be invoked.
+//
+func init() {
+	//
+	// Populate our stats-map
+	//
+	stats = make(map[string]int64)
 }
