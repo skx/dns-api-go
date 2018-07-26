@@ -126,7 +126,7 @@ func submitMetrics() {
 }
 
 //
-// Get the remote IP address of the client.
+// RemoteIP retrieves the remote IP address of the requesting HTTP-client.
 //
 // This is used for our redis-based rate-limiting.
 //
@@ -164,28 +164,28 @@ func serveResource(response http.ResponseWriter, request *http.Request, resource
 }
 
 //
-// Handler for /robots.txt
+// RobotHandler handles the request for /robots.txt
 //
 func RobotHandler(res http.ResponseWriter, req *http.Request) {
 	serveResource(res, req, "data/robots.txt", "text/plain")
 }
 
 //
-// Handler for /humans.txt
+// HumanHandler handles the request for /humans.txt
 //
 func HumanHandler(res http.ResponseWriter, req *http.Request) {
 	serveResource(res, req, "data/humans.txt", "text/plain")
 }
 
 //
-// Handler for /favicon.ico
+// IconHandler handles the request for /favicon.ico
 //
 func IconHandler(res http.ResponseWriter, req *http.Request) {
 	serveResource(res, req, "data/favicon.ico", "image/x-icon")
 }
 
 //
-// Index-handler
+// IndexHandler returns our front-page.
 //
 // The index-page _should_ be static, but we rewrite the domain-name
 // based upon the incoming request.
