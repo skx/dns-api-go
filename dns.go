@@ -15,7 +15,8 @@ import (
 )
 
 //
-// Here we have a map of types, we only cover the few we care about.
+// StringToType is a map of DNS query-types, we only cover the few we
+// care about.
 //
 var StringToType = map[string]uint16{
 	"A":     dns.TypeA,
@@ -58,11 +59,11 @@ func lookup(name string, ltype string) ([]map[string]string, error) {
 	}
 	r, err := localQuery(dns.Fqdn(name), ltype)
 	if err != nil || r == nil {
-		return nil, errors.New(fmt.Sprintf("Cannot retrieve the list of name servers for %s\n", name))
+		return nil, fmt.Errorf("Cannot retrieve the list of name servers for %s\n", name)
 
 	}
 	if r.Rcode == dns.RcodeNameError {
-		return nil, errors.New(fmt.Sprintf("No such domain %s\n", dns.Fqdn(name)))
+		return nil, fmt.Errorf("No such domain %s\n", dns.Fqdn(name))
 	}
 
 	for _, ent := range r.Answer {
@@ -90,10 +91,10 @@ func lookup(name string, ltype string) ([]map[string]string, error) {
 			tmp["type"] = "CNAME"
 			tmp["value"] = cname
 		case *dns.MX:
-			mx_name := ent.(*dns.MX).Mx
-			mx_prio := ent.(*dns.MX).Preference
+			mxName := ent.(*dns.MX).Mx
+			mxPrio := ent.(*dns.MX).Preference
 			tmp["type"] = "MX"
-			tmp["value"] = fmt.Sprintf("%d\t%s", mx_prio, mx_name)
+			tmp["value"] = fmt.Sprintf("%d\t%s", mxPrio, mxName)
 		case *dns.NS:
 			nameserver := ent.(*dns.NS).Ns
 			tmp["type"] = "NS"
