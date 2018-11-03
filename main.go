@@ -363,15 +363,17 @@ func DNSHandler(res http.ResponseWriter, req *http.Request) {
 		//
 		// Error.
 		//
-		tmp := make(map[string]string)
-		tmp["error"] = "NXDOMAIN"
-		out, _ := json.MarshalIndent(tmp, "", "     ")
-		fmt.Fprintf(res, "%s", out)
-
 		mutex.Lock()
 		stats["dns.type."+t] += 1
 		stats["dns.errors"] += 1
 		mutex.Unlock()
+
+		//
+		// No results.
+		//
+		status = http.StatusNotFound
+		err = errors.New("[]")
+		return
 
 	} else {
 		out, _ := json.MarshalIndent(results, "", "     ")
