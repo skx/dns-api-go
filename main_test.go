@@ -196,11 +196,11 @@ func TestBogusDNS(t *testing.T) {
 	}
 
 	content := fmt.Sprintf("%s", body)
-	if status := resp.StatusCode; status != http.StatusOK {
+	if status := resp.StatusCode; status != 404 {
 		t.Errorf("Unexpected status-code: %v", status)
 	}
 
-	if !strings.Contains(content, "NXDOMAIN") {
+	if !strings.Contains(content, "[]") {
 		t.Fatalf("Unexpected body: '%s'", content)
 	}
 }
