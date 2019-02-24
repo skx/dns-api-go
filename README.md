@@ -1,4 +1,3 @@
-[![Travis CI](https://img.shields.io/travis/skx/dns-api-go/master.svg?style=flat-square)](https://travis-ci.org/skx/dns-api-go)
 [![Go Report Card](https://goreportcard.com/badge/github.com/skx/dns-api-go)](https://goreportcard.com/report/github.com/skx/dns-api-go)
 [![license](https://img.shields.io/github/license/skx/dns-api-go.svg)](https://github.com/skx/dns-api-go/blob/master/LICENSE)
 [![Release](https://img.shields.io/github/release/skx/dns-api-go.svg)](https://github.com/skx/dns-api-go/releases/latest)
