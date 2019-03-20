@@ -364,8 +364,8 @@ func DNSHandler(res http.ResponseWriter, req *http.Request) {
 		// Error.
 		//
 		mutex.Lock()
-		stats["dns.type."+t] += 1
-		stats["dns.errors"] += 1
+		stats["dns.type."+t]++
+		stats["dns.errors"]++
 		mutex.Unlock()
 
 		//
@@ -374,16 +374,19 @@ func DNSHandler(res http.ResponseWriter, req *http.Request) {
 		status = http.StatusNotFound
 		err = errors.New("[]")
 		return
-
-	} else {
-		out, _ := json.MarshalIndent(results, "", "     ")
-		fmt.Fprintf(res, "%s", out)
-
-		mutex.Lock()
-		stats["dns.type."+t] += 1
-		stats["dns.queries"] += 1
-		mutex.Unlock()
 	}
+
+	//
+	// Show the results.
+	//
+	out, _ := json.MarshalIndent(results, "", "     ")
+	fmt.Fprintf(res, "%s", out)
+
+	mutex.Lock()
+	stats["dns.type."+t]++
+	stats["dns.queries"]++
+	mutex.Unlock()
+
 }
 
 //

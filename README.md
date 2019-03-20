@@ -3,7 +3,22 @@
 [![Release](https://img.shields.io/github/release/skx/dns-api-go.svg)](https://github.com/skx/dns-api-go/releases/latest)
 [![gocover store](http://gocover.io/_badge/github.com/skx/dns-api-go)](http://gocover.io/github.com/skx/dns-api-go)
 
-# dns-api-go
+
+
+* [dns-api-go](#dns-api-go)
+* [Installation](#installation)
+  * [Source Installation go &lt;=  1.11](#source-installation-go---111)
+  * [Source installation go  &gt;= 1.12](#source-installation-go---112)
+* [Rate Limiting](#rate-limiting)
+* [Metrics](#metrics)
+* [Docker deployment](#docker-deployment)
+* [Heroku deployment](#heroku-deployment)
+* [Notes](#notes)
+* [Hacking](#hacking)
+* [Github Setup](#github-setup)
+                                                                                       * [Steve](#steve)
+
+                                                                                       # dns-api-go
 
 This is a golang port of the old [perl-based DNS-API.org site](https://github.com/skx/dns-api.org/).
 
@@ -13,15 +28,27 @@ This is a golang port of the old [perl-based DNS-API.org site](https://github.co
 
 ## Installation
 
-Assuming you have a working go-setup you can update & install the project
-via these two commands:
+There are two ways to install this project from source, which depend on the version of the [go](https://golang.org/) version you're using.
 
-    $ go get -u  github.com/skx/dns-api-go
-    $ go install github.com/skx/dns-api-go
+If you don't have a golang environment configured you should be able to download [a binary release](https://github.com/skx/dns-api-go/releases) from the github project.
 
-If you don't have a golang environment configured you should be able to
-download [a binary release](https://github.com/skx/dns-api-go/releases) from
-the github project.
+
+### Source Installation go <=  1.11
+
+If you're using `go` before 1.11 then the following command should fetch/update `overseer`, and install it upon your system:
+
+     $ go get -u github.com/skx/dns-api-go
+
+
+### Source installation go  >= 1.12
+
+If you're using a more recent version of `go` (which is _highly_ recommended), you need to clone to a directory which is not present upon your `GOPATH`:
+
+    git clone https://github.com/skx/dns-api-go
+    cd dns-api-go
+    go install
+
+
 
 
 ### Rate Limiting
@@ -34,6 +61,7 @@ If this flag is not present then rate-limiting will be disabled.  If a client
 makes too many requests they will be returned a [HTTP 429 status-code](https://httpstatuses.com/429).  Each request made will return a series of headers
 prefixed with `X-RateLimit` to allow clients to see how many requests they
 have made, and have remaining.
+
 
 
 ### Metrics
@@ -94,12 +122,9 @@ so we can deploy it automatically even on other sites.
 
 If you alter the template-files beneath `data/` you will need to rebuild the `static.go` file before those changes will become visible.  (i.e. They are pre-processed and included inline in our generated binary, rather than being read at run-time.)
 
-First of all install the `implant` tool if you don't already have it:
+You'll need to install the [implant](https://github.com/skx/implant) tool.
 
-     $ go get -u github.com/skx/implant
-     $ go install github.com/skx/implant
-
-Now you can regenerate the static.go file:
+Now you can regenerate the `static.go` file using that:
 
      $ implant -input data/ -output static.go
 
@@ -110,13 +135,9 @@ And rebuild the main binary:
 
 ## Github Setup
 
-This repository is configured to run tests upon every commit, and when
-pull-requests are created/updated.  The testing is carried out via
-[.github/run-tests.sh](.github/run-tests.sh) which is used by the
-[github-action-tester](https://github.com/skx/github-action-tester) action.
+This repository is configured to run tests upon every commit, and when pull-requests are created/updated.  The testing is carried out via [.github/run-tests.sh](.github/run-tests.sh) which is used by the [github-action-tester](https://github.com/skx/github-action-tester) action.
 
-Releases are automated in a similar fashion via [.github/build](.github/build),
-and the [github-action-publish-binaries](https://github.com/skx/github-action-publish-binaries) action.
+Releases are automated in a similar fashion via [.github/build](.github/build), and the [github-action-publish-binaries](https://github.com/skx/github-action-publish-binaries) action.
 
 
 Steve
