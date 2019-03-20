@@ -59,11 +59,11 @@ func lookup(name string, ltype string) ([]map[string]string, error) {
 	}
 	r, err := localQuery(dns.Fqdn(name), ltype)
 	if err != nil || r == nil {
-		return nil, fmt.Errorf("Cannot retrieve the list of name servers for %s\n", name)
+		return nil, fmt.Errorf("Cannot retrieve the list of name servers for %s", name)
 
 	}
 	if r.Rcode == dns.RcodeNameError {
-		return nil, fmt.Errorf("No such domain %s\n", dns.Fqdn(name))
+		return nil, fmt.Errorf("no such domain %s", dns.Fqdn(name))
 	}
 
 	for _, ent := range r.Answer {
