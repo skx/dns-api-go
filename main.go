@@ -45,6 +45,11 @@ var (
 )
 
 //
+// Are we retired?
+//
+var retired = false
+
+//
 // Rate-limiter
 //
 var rateLimiter *redis_rate.Limiter
@@ -210,9 +215,17 @@ func IndexHandler(res http.ResponseWriter, req *http.Request) {
 	x.Redis = (rateLimiter != nil)
 
 	//
-	// Load our template from the embedded resource.
+	// We load our template from the embedded resource.
 	//
-	tmpl, err := ExpandResource("data/index.html")
+	file := "data/index.html"
+	if retired {
+		file = "data/retired.html"
+	}
+
+	//
+	// Load it.
+	//
+	tmpl, err := ExpandResource(file)
 	if err != nil {
 		fmt.Fprintf(res, err.Error())
 		return
@@ -270,6 +283,15 @@ func DNSHandler(res http.ResponseWriter, req *http.Request) {
 
 	h := res.Header()
 	h.Set("Access-Control-Allow-Origin", "*")
+
+	//
+	// Show nothing.
+	//
+	if retired {
+		status = http.StatusNotFound
+		err = errors.New("[]")
+		return
+	}
 
 	//
 	// Lookup the remote IP and limit to 200/Hour
@@ -494,6 +516,25 @@ func main() {
 	}
 
 	//
+	// Create a cron-job to test our file
+	//
+	c := cron.New()
+	c.AddFunc("@every 30s", func() {
+
+		//
+		// Lookup our file.
+		//
+		if _, err := os.Stat("/tmp/retired"); err == nil {
+			retired = true
+		} else {
+			retired = false
+		}
+		fmt.Printf("Updated retired to %v\n", retired)
+
+	})
+	c.Start()
+
+	//
 	// And finally start our HTTP-server
 	//
 	serve(*host, *port)
@@ -510,4 +551,11 @@ func init() {
 	// Populate our stats-map
 	//
 	stats = make(map[string]int64)
+
+	//
+	// `/tmp/retired` exists, so we're done.
+	//
+	if _, err := os.Stat("/tmp/retired"); err == nil {
+		retired = true
+	}
 }
