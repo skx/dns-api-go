@@ -17,9 +17,9 @@
 * [Hacking](#hacking)
 * [Production Deployment](#production-deployment)
 * [Github Setup](#github-setup)
-                                                                                       * [Steve](#steve)
 
-                                                                                       # dns-api-go
+
+# dns-api-go
 
 This is a golang port of the old [perl-based DNS-API.org site](https://github.com/skx/dns-api.org/).
 
