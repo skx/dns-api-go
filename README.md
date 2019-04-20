@@ -143,7 +143,7 @@ Surprisingly hosting this service publicly results in a **ton** of:
 
 The former I tried to handle via cloudflare, but caching DNS data means the service doesn't run in a useful way, as you might expect.
 
-To avoid further timesyncs I'm taking the main service [dns-api.org](https://dns-api.org/) offline - unless people pay.  The code _here_ will always be open, and available for use though.
+To avoid further support-request and abuse complaints I'm taking the main service [dns-api.org](https://dns-api.org/) offline - unless people pay.  The code _here_ will always be open, and available for use though.
 
 The current codebase will serve a "We're retired - unless you pay" message if the file `/tmp/retired` exists.  This will be checked every 30 seconds or so.
 
