@@ -288,7 +288,7 @@ func DNSHandler(res http.ResponseWriter, req *http.Request) {
 	// Show nothing.
 	//
 	if retired {
-		status = http.StatusNotFound
+		status = http.StatusForbidden
 		err = errors.New("[]")
 		return
 	}
