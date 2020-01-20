@@ -36,7 +36,7 @@ If you don't have a golang environment configured you should be able to download
 
 ### Source Installation go <=  1.11
 
-If you're using `go` before 1.11 then the following command should fetch/update `overseer`, and install it upon your system:
+If you're using `go` before 1.11 then the following command should fetch/update the project and install it upon your system:
 
      $ go get -u github.com/skx/dns-api-go
 
